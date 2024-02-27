@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"sync"
+	"time"
 )
 
 func main() {
@@ -138,7 +140,7 @@ func main() {
 	// fmt.Println(sum(3, 4)) // 7
 
 	// method
-	agus := person{name: "Agus", age: 25}
+	// agus := person{name: "Agus", age: 25}
 	// agus.sayHello() // Hello Agus
 
 	// agus.age = 30
@@ -150,15 +152,21 @@ func main() {
 	// fmt.Println(copyanAgus.name) // Agus
 	// fmt.Println(agus.name)       // Agus Ganteng
 
-	var agusShare *person = &agus // pass by reference
-	agus.name = "Agus Ganteng Banget"
-	fmt.Println(agusShare.name)
+	// var agusShare *person = &agus // pass by reference
+	// agus.name = "Agus Ganteng Banget"
+	// fmt.Println(agusShare.name)
 
-	agusShare.name = "Agus Ganteng Sekali"
-	fmt.Println(agus.name)
+	// agusShare.name = "Agus Ganteng Sekali"
+	// fmt.Println(agus.name)
 
 	// panic
-	status(nil)
+	// status(nil)
+
+	// Goroutine()
+	Mutex()
+	Mutex()
+	Mutex()
+	Mutex()
 }
 
 // func sayHello(name any, age int) (string, string, error) {
@@ -198,4 +206,59 @@ func status(person *person) error {
 		person.status = "menikah"
 	}
 	return nil
+}
+
+// sample func with goroutine processes
+func Goroutine() {
+	wg := sync.WaitGroup{}
+
+	wg.Add(1)
+	go func() {
+		time.Sleep(1 * time.Second)
+		fmt.Println("World")
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		time.Sleep(1 * time.Second)
+		fmt.Println("Satu")
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
+		time.Sleep(1 * time.Second)
+		fmt.Println("Dua")
+		wg.Done()
+	}()
+
+	fmt.Println("Hello")
+	wg.Wait()
+}
+
+// Mutex
+func Mutex() {
+	mu := sync.Mutex{}
+
+	wg := sync.WaitGroup{}
+	var x = 0
+	for i := 0; i < 1000; i++ {
+		wg.Add(1)
+		go func() {
+			for j := 0; j < 1000; j++ {
+				mu.Lock()
+				x++
+				mu.Unlock()
+			}
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	fmt.Println(x)
+
+	// saldo 1000 / 1500 / 700
+	// topup 500  -- 1500  -- 1000 + 500 -- 1500 selesai
+	// tarik 800  -- 700 -- |||| 1500 - 800 -- 700
+	// 700
 }
