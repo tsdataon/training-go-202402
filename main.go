@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"gotraining3/company"
 	"sync"
 	"time"
 )
@@ -163,10 +164,21 @@ func main() {
 	// status(nil)
 
 	// Goroutine()
-	Mutex()
-	Mutex()
-	Mutex()
-	Mutex()
+	// Mutex()
+	// Mutex()
+	// Mutex()
+	// Mutex()
+
+	budi := company.Employee{
+		Name:     "Budi",
+		Position: "Manager",
+	}
+	fmt.Println(budi.GetEmployeeName())
+
+	// budi.Outfit = company.Kaos{}
+	// budi.Outfit = company.Jacket{}
+	budi.Outfit = company.Kemeja{}
+	budi.GetOutfit()
 }
 
 // func sayHello(name any, age int) (string, string, error) {
